@@ -30,27 +30,45 @@ const PageContainer = styled.div`
 `;
 
 const FormContainer = styled.div`
-  background-color: ${colors.background};
-  border: 1px solid ${colors.border};
+  /* background-color: ${colors.background}; */
+  /* background-color: #ffffff;
+  box-shadow: 0 4px 8px ${colors.shadow}; */
+  /* border: 1px solid ${colors.border}; */
+
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 8px ${colors.shadow};
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
 
 const CardsContainer = styled.div`
-  grid-column: span 1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 50px;
-  justify-content: flex-start;
-  align-items: flex-start;
+  grid-column: span 2;
+  gap: 75px;
   padding: 100px 0;
   /* overflow-y: auto; */
+  display: grid;
   border-top: 1px solid ${colors.border};
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(300px, 1fr)
+  ); /* Автоматическое заполнение */
+  grid-auto-rows: min-content; /* Автоматическая высота строк */
 `;
+
+// const CardsContainer = styled.div`
+//   grid-column: span 2;
+//   display: grid;
+//   grid-template-columns: repeat(
+//     auto-fill,
+//     minmax(250px, 1fr)
+//   ); /* Автоматическое заполнение */
+//   grid-auto-rows: min-content; /* Автоматическая высота строк */
+//   gap: 20px; /* Расстояние между карточками */
+//   justify-items: center; /* Центрирование карточек */
+//   padding: 50px 0;
+//   border-top: 1px solid ${colors.border};
+// `;
 
 const EmptyMessage = styled.p`
   color: ${colors.emptyText};

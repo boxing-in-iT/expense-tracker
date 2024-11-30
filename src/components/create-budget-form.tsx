@@ -3,6 +3,23 @@ import styled from "styled-components";
 
 // Стили
 
+const colors = {
+  background: "#f9f9f9",
+  border: "#ddd",
+  text: "#333",
+  emptyText: "#888",
+  shadow: "rgba(0, 0, 0, 0.1)",
+};
+
+const Card = styled.div`
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px ${colors.shadow};
+  border: 1px solid ${colors.border};
+  border-radius: 10px;
+  width: 100%;
+  padding: 20px;
+`;
+
 const FormTitle = styled.h2`
   font-size: 1.5rem;
   margin: 0;
@@ -78,7 +95,7 @@ const CreateBudgetForm: React.FC<CreateBudgetFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <>
+    <Card>
       <FormTitle>Создать бюджет</FormTitle>
       <form onSubmit={handleSubmit}>
         <FormField>
@@ -110,7 +127,7 @@ const CreateBudgetForm: React.FC<CreateBudgetFormProps> = ({ onSubmit }) => {
           Создать
         </SubmitButton>
       </form>
-    </>
+    </Card>
   );
 };
 

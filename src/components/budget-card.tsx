@@ -5,7 +5,9 @@ import { calculatePercentangle, calculateSpentByBudget } from "../util/util";
 
 // Стили для карточки
 const Card = styled.div<{ color: string; isOverBudget: boolean }>`
-  width: 300px;
+  /* width: 400px; */
+  width: 100%;
+  height: 200px;
   padding: 20px;
   border-radius: 10px;
   background-color: ${({ isOverBudget }) =>
@@ -13,11 +15,11 @@ const Card = styled.div<{ color: string; isOverBudget: boolean }>`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
-const Header = styled.div`
+const Header = styled.div<{ color: string }>`
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #333;
+  color: ${({ color }) => color};
 `;
 
 const Amount = styled.div<{ isOverBudget: boolean }>`
@@ -49,8 +51,9 @@ const ProgressBarFill = styled.div<{
 }>`
   width: ${({ percentage }) => Math.min(percentage, 100)}%;
   height: 100%;
-  background-color: ${({ isOverBudget }) =>
-    isOverBudget ? "#f44336" : "#4caf50"};
+  /* background-color: ${({ isOverBudget }) =>
+    isOverBudget ? "#f44336" : "#4caf50"}; */
+  background-color: ${({ color }) => color};
   transition: width 0.3s ease;
 `;
 
@@ -68,7 +71,7 @@ const BudgetCard = (props: Props) => {
 
   return (
     <Card color={color} isOverBudget={isOverBudget}>
-      <Header>{name}</Header>
+      <Header color={color}>{name}</Header>
       <Amount isOverBudget={isOverBudget}>
         {isOverBudget
           ? `Превышение на ${spent - amount}$`

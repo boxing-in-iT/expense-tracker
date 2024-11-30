@@ -7,6 +7,7 @@ import { User } from "./data/interfaces";
 import { useAppContext } from "./AppContext";
 import Main from "./pages/Main";
 import { fetchData } from "./util/util";
+import BudgetsPage from "./pages/Budgets/budgets-page";
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -18,7 +19,7 @@ const AppContainer = styled.div`
 `;
 
 function App() {
-  const { user, setUser } = useAppContext();
+  const { user, setUser, budgets } = useAppContext();
 
   // Проверяем, есть ли пользователь в localStorage
   useEffect(() => {
