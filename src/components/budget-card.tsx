@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Budget } from "../data/interfaces";
 import { calculatePercentangle, calculateSpentByBudget } from "../util/util";
+import { Link } from "react-router-dom";
 
 // Стили для карточки
 const Card = styled.div<{ color: string; isOverBudget: boolean }>`
@@ -57,13 +58,22 @@ const ProgressBarFill = styled.div<{
   transition: width 0.3s ease;
 `;
 
+const DetailButton = styled.button`
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+`;
+
 type Props = {
   budget: Budget;
+  showDetailButton?: boolean;
 };
 
 // Компонент BudgetCard
-const BudgetCard = (props: Props) => {
-  const { budget } = props;
+const BudgetCard = ({ budget, showDetailButton = false }: Props) => {
   const { id, name, amount, createdAt, color } = budget;
   const spent = calculateSpentByBudget(id);
   const percentagle = calculatePercentangle(spent, amount);
@@ -85,6 +95,11 @@ const BudgetCard = (props: Props) => {
           isOverBudget={isOverBudget}
         />
       </ProgressBarContainer>
+      {showDetailButton && (
+        <Link to={`/budgets/${id}`}>
+          <DetailButton>Подробнее</DetailButton>
+        </Link>
+      )}
     </Card>
   );
 };

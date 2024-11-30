@@ -129,7 +129,13 @@ const Main = () => {
           [...budgets]
             .reverse()
             .slice(0, 4)
-            .map((budget) => <BudgetCard key={budget.id} budget={budget} />)
+            .map((budget) => (
+              <BudgetCard
+                key={budget.id}
+                budget={budget}
+                showDetailButton={true}
+              />
+            ))
         ) : (
           <EmptyMessage>Нет бюджетов</EmptyMessage>
         )}

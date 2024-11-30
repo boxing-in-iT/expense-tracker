@@ -8,6 +8,7 @@ import { useAppContext } from "./AppContext";
 import Main from "./pages/Main";
 import { fetchData } from "./util/util";
 import BudgetsPage from "./pages/Budgets/budgets-page";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -30,15 +31,20 @@ function App() {
   }, [setUser]);
 
   return (
-    <AppContainer>
-      {user ? (
-        <>
-          <Main />
-        </>
-      ) : (
-        <Register />
-      )}
-    </AppContainer>
+    <BrowserRouter>
+      <AppContainer>
+        {user ? (
+          <>
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/budgets/:id" element={<BudgetsPage />} />
+            </Routes>
+          </>
+        ) : (
+          <Register />
+        )}
+      </AppContainer>
+    </BrowserRouter>
   );
 }
 

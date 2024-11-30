@@ -28,7 +28,8 @@ const FormTitle = styled.h2`
 const FormField = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
+  margin-top: 40px;
 `;
 
 const Label = styled.label`
@@ -71,6 +72,7 @@ const SubmitButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 25px;
 
   &:hover {
     background-color: #45a049;
@@ -110,9 +112,14 @@ const CreateExpenseForm: React.FC<ExpenseFormProps> = ({
     }
   };
 
+  console.log("budgets", budgets.length);
+
   return (
     <Card>
-      <FormTitle>Создать трату</FormTitle>
+      <FormTitle>
+        Создать трату{" "}
+        {budgets.length === 1 && `${budgets.map((budg) => budg.name)}`}
+      </FormTitle>
       <form onSubmit={handleSubmit}>
         <FormField>
           <Label htmlFor="name">Название</Label>
@@ -139,7 +146,7 @@ const CreateExpenseForm: React.FC<ExpenseFormProps> = ({
             min="0"
           />
         </FormField>
-        <FormField>
+        <FormField style={{ display: budgets.length === 1 ? "none" : "flex" }}>
           <Label htmlFor="budget">Бюджет</Label>
           <Select
             id="budget"
