@@ -5,7 +5,7 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { Budget, User } from "./data/interfaces"; // Используем ваш существующий интерфейс
+import { Budget, Expense, User } from "./data/interfaces"; // Используем ваш существующий интерфейс
 
 // Типы для контекста
 interface AppContextType {
@@ -13,6 +13,8 @@ interface AppContextType {
   setUser: (user: User | null) => void;
   budgets: Budget[];
   setBudgets: (budgets: Budget[]) => void;
+  expenses: Expense[];
+  setExpenses: (expenses: Expense[]) => void;
 }
 
 // Создаём контекст
@@ -26,6 +28,7 @@ interface AppProviderProps {
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -37,10 +40,17 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     if (savedBudgets) {
       setBudgets(JSON.parse(savedBudgets));
     }
+
+    const savedExpenses = localStorage.getItem("expenses");
+    if (savedExpenses) {
+      setExpenses(JSON.parse(savedExpenses));
+    }
   }, []);
 
   return (
-    <AppContext.Provider value={{ user, setUser, budgets, setBudgets }}>
+    <AppContext.Provider
+      value={{ user, setUser, budgets, setBudgets, expenses, setExpenses }}
+    >
       {children}
     </AppContext.Provider>
   );

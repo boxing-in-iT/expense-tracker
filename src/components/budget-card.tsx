@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { Budget } from "../data/interfaces";
+import { calculatePercentangle, calculateSpentByBudget } from "../util/util";
 
 // Стили для карточки
-const Card = styled.div`
+const Card = styled.div<{ color: string; isOverBudget: boolean }>`
   width: 300px;
   padding: 20px;
   border-radius: 10px;
-  background-color: #f9f9f9;
+  background-color: ${({ isOverBudget }) =>
+    isOverBudget ? "#ffe6e6" : "#f9f9f9"};
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
@@ -17,10 +20,10 @@ const Header = styled.div`
   color: #333;
 `;
 
-const Amount = styled.div`
+const Amount = styled.div<{ isOverBudget: boolean }>`
   font-size: 2rem;
   font-weight: bold;
-  color: #4caf50;
+  color: ${({ isOverBudget }) => (isOverBudget ? "#f44336" : "#333")};
   margin: 10px 0;
 `;
 
@@ -30,7 +33,6 @@ const Details = styled.div`
   margin-bottom: 15px;
 `;
 
-// Стили для прогресс-бара
 const ProgressBarContainer = styled.div`
   width: 100%;
   height: 10px;
@@ -40,45 +42,46 @@ const ProgressBarContainer = styled.div`
   margin-bottom: 15px;
 `;
 
-const ProgressBarFill = styled.div<{ percentage: number }>`
-  width: ${({ percentage }) => percentage}%;
+const ProgressBarFill = styled.div<{
+  percentage: number;
+  color: string;
+  isOverBudget: boolean;
+}>`
+  width: ${({ percentage }) => Math.min(percentage, 100)}%;
   height: 100%;
-  background-color: ${({ percentage }) =>
-    percentage > 75 ? "#f44336" : percentage > 50 ? "#ff9800" : "#4caf50"};
+  background-color: ${({ isOverBudget }) =>
+    isOverBudget ? "#f44336" : "#4caf50"};
   transition: width 0.3s ease;
 `;
 
-const Button = styled.button`
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #45a049;
-  }
-`;
+type Props = {
+  budget: Budget;
+};
 
 // Компонент BudgetCard
-const BudgetCard = () => {
-  const totalBudget = 1250; // Общий бюджет
-  const spent = 800; // Потрачено
-  const remaining = totalBudget - spent; // Остаток
-  const percentageSpent = (spent / totalBudget) * 100; // Процент потраченного
+const BudgetCard = (props: Props) => {
+  const { budget } = props;
+  const { id, name, amount, createdAt, color } = budget;
+  const spent = calculateSpentByBudget(id);
+  const percentagle = calculatePercentangle(spent, amount);
+  const isOverBudget = spent > amount;
 
   return (
-    <Card>
-      <Header>Мой Бюджет</Header>
-      <Amount>${remaining} осталось</Amount>
-      <Details>Из $1250 бюджета</Details>
+    <Card color={color} isOverBudget={isOverBudget}>
+      <Header>{name}</Header>
+      <Amount isOverBudget={isOverBudget}>
+        {isOverBudget
+          ? `Превышение на ${spent - amount}$`
+          : `${amount - spent}$ осталось`}
+      </Amount>
+      <Details>Из {amount} бюджета</Details>
       <ProgressBarContainer>
-        <ProgressBarFill percentage={percentageSpent} />
+        <ProgressBarFill
+          percentage={+percentagle}
+          color={color}
+          isOverBudget={isOverBudget}
+        />
       </ProgressBarContainer>
-      <Button>Добавить транзакцию</Button>
     </Card>
   );
 };

@@ -9,3 +9,11 @@ export interface Budget {
   createdAt: number;
   color: string;
 }
+
+export interface Expense {
+  id: string; // Changed from number to string
+  name: string;
+  amount: number;
+  budgetId: string;
+  createdAt: number;
+}

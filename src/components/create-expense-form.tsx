@@ -3,17 +3,6 @@ import styled from "styled-components";
 import { Budget } from "../data/interfaces";
 
 // Стили
-const FormContainer = styled.div`
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`;
 
 const FormTitle = styled.h2`
   font-size: 1.5rem;
@@ -107,7 +96,7 @@ const CreateExpenseForm: React.FC<ExpenseFormProps> = ({
   };
 
   return (
-    <FormContainer>
+    <>
       <FormTitle>Создать трату</FormTitle>
       <form onSubmit={handleSubmit}>
         <FormField>
@@ -157,7 +146,7 @@ const CreateExpenseForm: React.FC<ExpenseFormProps> = ({
           Добавить трату
         </SubmitButton>
       </form>
-    </FormContainer>
+    </>
   );
 };
 

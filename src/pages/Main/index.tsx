@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import BudgetCard from "../../components/budget-card";
-import { Budget } from "../../data/interfaces";
+import { Budget, Expense } from "../../data/interfaces";
 import CreateBudgetForm from "../../components/create-budget-form";
 import CreateExpenseForm from "../../components/create-expense-form";
-import { createBudget } from "../../util/util";
+import { createBudget, createExpense } from "../../util/util";
 import { useAppContext } from "../../AppContext";
+import ExpensesTable from "../../components/expenses-table";
 
 // Variables for reusable styles
 const colors = {
@@ -40,14 +41,14 @@ const FormContainer = styled.div`
 `;
 
 const CardsContainer = styled.div`
-  grid-column: span 2;
+  grid-column: span 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0;
-  overflow-y: auto;
+  gap: 50px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 100px 0;
+  /* overflow-y: auto; */
   border-top: 1px solid ${colors.border};
 `;
 
@@ -57,14 +58,35 @@ const EmptyMessage = styled.p`
   text-align: center;
 `;
 
+const TableContainer = styled.div`
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 100px 0;
+  /* overflow-y: auto; */
+  border-top: 1px solid ${colors.border};
+`;
+
 // Main component
 const Main = () => {
-  const { budgets, setBudgets } = useAppContext();
+  const { budgets, setBudgets, expenses, setExpenses } = useAppContext();
   const handleAddBudget = (budget: { name: string; amount: number }) => {
     const newBudget: Budget = createBudget(budget);
     setBudgets([...budgets, newBudget]);
     console.log(newBudget);
     console.log(typeof newBudget);
+  };
+
+  const handleAddExpense = (expense: {
+    name: string;
+    amount: number;
+    budgetId: string;
+  }) => {
+    const newExpense: Expense = createExpense(expense);
+    setExpenses([...expenses, newExpense]);
   };
 
   return (
@@ -77,7 +99,7 @@ const Main = () => {
       {/* Expense creation form */}
       <FormContainer>
         {budgets && budgets.length > 0 ? (
-          <CreateExpenseForm onSubmit={() => {}} budgets={budgets} />
+          <CreateExpenseForm onSubmit={handleAddExpense} budgets={budgets} />
         ) : (
           <EmptyMessage>Сначала создайте бюджет</EmptyMessage>
         )}
@@ -86,11 +108,23 @@ const Main = () => {
       {/* Budget cards */}
       <CardsContainer>
         {budgets && budgets.length > 0 ? (
-          budgets.map((budget) => <BudgetCard key={budget.id} />)
+          [...budgets]
+            .reverse()
+            .slice(0, 4)
+            .map((budget) => <BudgetCard key={budget.id} budget={budget} />)
         ) : (
           <EmptyMessage>Нет бюджетов</EmptyMessage>
         )}
       </CardsContainer>
+
+      {/* Expenses table */}
+      <TableContainer>
+        {expenses && expenses.length > 0 ? (
+          <ExpensesTable expenses={expenses} />
+        ) : (
+          <EmptyMessage>Нет расходов</EmptyMessage>
+        )}
+      </TableContainer>
     </PageContainer>
   );
 };
