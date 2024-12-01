@@ -100,7 +100,9 @@ const CreateExpenseForm: React.FC<ExpenseFormProps> = ({
 }) => {
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<number | "">("");
-  const [budgetId, setBudgetId] = useState<string>("");
+  const [budgetId, setBudgetId] = useState<string>(
+    budgets.length === 1 ? budgets[0].id : "" // Устанавливаем id, если бюджет только один
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import BudgetCard from "../../components/budget-card";
 import { Budget, Expense, Income, IncomeSource } from "../../data/interfaces";
@@ -16,6 +16,8 @@ import CreateIncomeSourceForm from "../../components/create-income-source-from";
 import CreateIncomeForm from "../../components/create-income-form";
 import IncomeCard from "../../components/income-card";
 import IncomeTable from "../../components/income-table";
+import Modal from "../../components/modal";
+import FullyStatistic from "../../components/fully-statistics";
 
 // Variables for reusable styles
 const colors = {
@@ -66,20 +68,6 @@ const CardsContainer = styled.div`
   grid-auto-rows: min-content; /* Автоматическая высота строк */
 `;
 
-// const CardsContainer = styled.div`
-//   grid-column: span 2;
-//   display: grid;
-//   grid-template-columns: repeat(
-//     auto-fill,
-//     minmax(250px, 1fr)
-//   ); /* Автоматическое заполнение */
-//   grid-auto-rows: min-content; /* Автоматическая высота строк */
-//   gap: 20px; /* Расстояние между карточками */
-//   justify-items: center; /* Центрирование карточек */
-//   padding: 50px 0;
-//   border-top: 1px solid ${colors.border};
-// `;
-
 const EmptyMessage = styled.p`
   color: ${colors.emptyText};
   font-size: 16px;
@@ -124,18 +112,32 @@ const IncomeButton = styled.button`
   }
 `;
 
-// const IncomeContainer = styled.div`
-//   grid-column: span 2;
-//   gap: 75px;
-//   padding: 100px 0;
-//   display: grid;
-//   border-top: 1px solid ${colors.border};
-//   grid-template-columns: repeat(
-//     auto-fill,
-//     minmax(300px, 1fr)
-//   ); /* Автоматическое заполнение */
-//   grid-auto-rows: min-content; /* Автоматическая высота строк */
-// `;
+const ShowStatisticsData = styled.button`
+  position: absolute;
+  top: 24%;
+  left: -70px;
+  height: 350px;
+  transform: translateY(-50%);
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-lr; /* Rotate text */
+  text-align: center;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
+
 const IncomeContainer = styled.div`
   border-top: 1px solid ${colors.border};
   border-radius: 12px;
@@ -179,6 +181,11 @@ const Main = () => {
     income,
     setIncome,
   } = useAppContext();
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const toggleModal = () => setModalOpen(!isModalOpen);
+
   const handleAddBudget = (budget: { name: string; amount: number }) => {
     const newBudget: Budget = createBudget(budget);
     setBudgets([...budgets, newBudget]);
@@ -216,6 +223,10 @@ const Main = () => {
   return (
     <PageContainer>
       {/* Budget creation form */}
+
+      <ShowStatisticsData onClick={toggleModal}>
+        Показать статистику
+      </ShowStatisticsData>
 
       <IncomeButton onClick={handleToggleExpense}>
         {isExpense ? "Доход" : "Расход"}
@@ -313,6 +324,15 @@ const Main = () => {
           </TableContainer>
         </>
       )}
+
+      <Modal isOpen={isModalOpen} onClose={toggleModal}>
+        <FullyStatistic
+          budgets={budgets}
+          expenses={expenses}
+          incomes={income}
+          incomeSources={incomeSources}
+        />
+      </Modal>
     </PageContainer>
   );
 };

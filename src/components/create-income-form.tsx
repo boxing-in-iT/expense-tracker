@@ -97,7 +97,9 @@ interface IncomeFormProps {
 const CreateIncomeForm = ({ onSubmit, incomeSources }: IncomeFormProps) => {
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<number | "">("");
-  const [incomeSourceId, setIncomeSourceId] = useState<string>("");
+  const [incomeSourceId, setIncomeSourceId] = useState<string>(
+    incomeSources.length === 1 ? incomeSources[0].id : ""
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -36,9 +36,12 @@ const IncomeTable = (props: IncomeTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {income.slice(0, 5).map((item) => (
+        {income.map((item) => (
           <IncomeTableRow key={item.id} income={item} />
         ))}
+        {/* {income.slice(0, 5).map((item) => (
+          <IncomeTableRow key={item.id} income={item} />
+        ))} */}
       </tbody>
     </Table>
   );

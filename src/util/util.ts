@@ -98,7 +98,8 @@ export const createIncome = ({
   const newItem: Income = {
     id: crypto.randomUUID(),
     name: name,
-    createdAt: Date.now(),
+    // createdAt: Date.now(),
+    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).getTime(),
     amount: +amount,
     incomeSourceId: incomeSourceId,
   };
@@ -144,6 +145,7 @@ export const logout = () => {
   deleteItem({ key: "budgets", id: null });
   deleteItem({ key: "expenses", id: null });
   deleteItem({ key: "incomeSources", id: null });
+  deleteItem({ key: "income", id: null });
 };
 
 // export const formatPercentage = (amt) => {
