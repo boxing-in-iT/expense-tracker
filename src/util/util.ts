@@ -1,7 +1,13 @@
-import { Budget, Expense, User } from "../data/interfaces";
+import {
+  Budget,
+  Expense,
+  Income,
+  IncomeSource,
+  User,
+} from "../data/interfaces";
 
-const generateRandomColor = () => {
-  const existingBudgetLength = fetchData("budgets")?.length ?? 0;
+const generateRandomColor = (key: string) => {
+  const existingBudgetLength = fetchData(key)?.length ?? 0;
   return `hsl(${existingBudgetLength * 34}, 65%, 50%)`;
 };
 
@@ -26,13 +32,31 @@ export const createBudget = ({
     name: name,
     amount: amount,
     createdAt: Date.now(),
-    color: generateRandomColor(),
+    color: generateRandomColor("budgets"),
   };
 
   const existingBudgets = fetchData("budgets") ?? [];
   localStorage.setItem(
     "budgets",
     JSON.stringify([...existingBudgets, newItem])
+  );
+
+  return newItem;
+};
+
+export const createIncomeSource = ({ name }: { name: string }) => {
+  const newItem: IncomeSource = {
+    id: crypto.randomUUID(),
+    name: name,
+    amount: 0,
+    createdAt: Date.now(),
+    color: generateRandomColor("incomeSources"),
+  };
+
+  const existingIncomeSources = fetchData("incomeSources") ?? [];
+  localStorage.setItem(
+    "incomeSources",
+    JSON.stringify([...existingIncomeSources, newItem])
   );
 
   return newItem;
@@ -59,6 +83,27 @@ export const createExpense = ({
     "expenses",
     JSON.stringify([...existingExpenses, newItem])
   );
+  return newItem;
+};
+
+export const createIncome = ({
+  name,
+  amount,
+  incomeSourceId,
+}: {
+  name: string;
+  amount: number;
+  incomeSourceId: string;
+}) => {
+  const newItem: Income = {
+    id: crypto.randomUUID(),
+    name: name,
+    createdAt: Date.now(),
+    amount: +amount,
+    incomeSourceId: incomeSourceId,
+  };
+  const existingIncome = fetchData("income") ?? [];
+  localStorage.setItem("income", JSON.stringify([...existingIncome, newItem]));
   return newItem;
 };
 
@@ -98,6 +143,7 @@ export const logout = () => {
   deleteItem({ key: "user", id: null });
   deleteItem({ key: "budgets", id: null });
   deleteItem({ key: "expenses", id: null });
+  deleteItem({ key: "incomeSources", id: null });
 };
 
 // export const formatPercentage = (amt) => {

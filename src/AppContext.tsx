@@ -5,7 +5,7 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { Budget, Expense, User } from "./data/interfaces"; // Используем ваш существующий интерфейс
+import { Budget, Expense, Income, IncomeSource, User } from "./data/interfaces"; // Используем ваш существующий интерфейс
 
 // Типы для контекста
 interface AppContextType {
@@ -15,6 +15,12 @@ interface AppContextType {
   setBudgets: (budgets: Budget[]) => void;
   expenses: Expense[];
   setExpenses: (expenses: Expense[]) => void;
+  incomeSources: IncomeSource[];
+  setIncomeSources: (incomeSources: IncomeSource[]) => void;
+  isExpense: boolean;
+  setIsExpense: (isExpense: boolean) => void;
+  income: Income[];
+  setIncome: (income: Income[]) => void;
 }
 
 // Создаём контекст
@@ -29,6 +35,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [isExpense, setIsExpense] = useState<boolean>(true);
+  const [incomeSources, setIncomeSources] = useState<IncomeSource[]>([]);
+  const [income, setIncome] = useState<Income[]>([]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -45,11 +54,34 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     if (savedExpenses) {
       setExpenses(JSON.parse(savedExpenses));
     }
+
+    const savedIncomeSources = localStorage.getItem("incomeSources");
+    if (savedIncomeSources) {
+      setIncomeSources(JSON.parse(savedIncomeSources));
+    }
+
+    const savedIncome = localStorage.getItem("income");
+    if (savedIncome) {
+      setIncome(JSON.parse(savedIncome));
+    }
   }, []);
 
   return (
     <AppContext.Provider
-      value={{ user, setUser, budgets, setBudgets, expenses, setExpenses }}
+      value={{
+        user,
+        setUser,
+        budgets,
+        setBudgets,
+        expenses,
+        setExpenses,
+        isExpense,
+        setIsExpense,
+        incomeSources,
+        setIncomeSources,
+        income,
+        setIncome,
+      }}
     >
       {children}
     </AppContext.Provider>

@@ -59,13 +59,22 @@ const NavLinks = styled.div`
 `;
 
 const Nav = () => {
-  const { user, setBudgets, setExpenses, setUser } = useAppContext();
+  const {
+    user,
+    setBudgets,
+    setExpenses,
+    setUser,
+    setIncomeSources,
+    setIncome,
+  } = useAppContext();
 
   const handleLogout = () => {
     logout();
     setUser(null);
     setBudgets([]);
     setExpenses([]);
+    setIncomeSources([]);
+    setIncome([]);
   };
 
   return (
