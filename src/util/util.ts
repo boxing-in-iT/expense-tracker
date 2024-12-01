@@ -85,6 +85,21 @@ export const calculatePercentangle = (amount: number, total: number) => {
 export const formatDateToLocaleString = (epoch: number) =>
   new Date(epoch).toLocaleDateString();
 
+export const deleteItem = ({ key, id }: any) => {
+  const existingData = fetchData(key);
+  if (id) {
+    const newData = existingData.filter((item: any) => item.id !== id);
+    return localStorage.setItem(key, JSON.stringify(newData));
+  }
+  return localStorage.removeItem(key);
+};
+
+export const logout = () => {
+  deleteItem({ key: "user", id: null });
+  deleteItem({ key: "budgets", id: null });
+  deleteItem({ key: "expenses", id: null });
+};
+
 // export const formatPercentage = (amt) => {
 //   return amt.toLocaleString(undefined, {
 //     style: "percent",

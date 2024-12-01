@@ -9,6 +9,7 @@ import Main from "./pages/Main";
 import { fetchData } from "./util/util";
 import BudgetsPage from "./pages/Budgets/budgets-page";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Nav from "./components/navbar";
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -35,6 +36,8 @@ function App() {
       <AppContainer>
         {user ? (
           <>
+            <Nav />
+
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/budgets/:id" element={<BudgetsPage />} />
