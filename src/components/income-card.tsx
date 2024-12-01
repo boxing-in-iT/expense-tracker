@@ -85,7 +85,7 @@ const IncomeCard = ({ income, incomeSources }: Props) => {
   return (
     <Card>
       <Header>Доходы</Header>
-      <Amount>{totalIncome.toLocaleString()} ₽</Amount>
+      <Amount>{totalIncome.toLocaleString()} $</Amount>
       <ChartContainer>
         <PieChart width={200} height={200}>
           <Pie

@@ -15,6 +15,7 @@ import ExpensesTable from "../../components/expenses-table";
 import CreateIncomeSourceForm from "../../components/create-income-source-from";
 import CreateIncomeForm from "../../components/create-income-form";
 import IncomeCard from "../../components/income-card";
+import IncomeTable from "../../components/income-table";
 
 // Variables for reusable styles
 const colors = {
@@ -302,6 +303,14 @@ const Main = () => {
             </IncomeSourcesList>
           </IncomeContainer>
           {/* Список источников дохода */}
+
+          <TableContainer>
+            {income && income.length > 0 ? (
+              <IncomeTable income={income} />
+            ) : (
+              <EmptyMessage>Нет доходов</EmptyMessage>
+            )}
+          </TableContainer>
         </>
       )}
     </PageContainer>
